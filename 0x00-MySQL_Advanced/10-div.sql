@@ -1,0 +1,14 @@
+-- creates a function that performs a safe divivison
+DROP FUNCTION IF EXISTS SafeDiv;
+DELIMITER //
+CREATE FUNCTION SafeDiv (a INTEGER, b INTEGER)
+RETURN FLOAT
+DETERMINISTIC
+BEGIN
+	IF b != 0 THEN
+		RETURN a / b;
+	ELSE
+		RETURN 0;
+	END IF
+END//
+DELIMITER ;
