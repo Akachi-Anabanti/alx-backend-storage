@@ -13,3 +13,10 @@ print("Methods:")
 for method in methods:
     method_count = db.nginx.count_documents({'method': method})
     print(f'\tmethod {method}: {method_count}')
+
+
+status_paths = db.nginx.count_documents(
+        {'method': 'GET', 'path': '/status'}
+        )
+
+print(f'{status_paths} status check')
