@@ -1,0 +1,2 @@
+// deletes document with criteria
+db.school.remove({name: "Holberton school"}, {multi: true});
