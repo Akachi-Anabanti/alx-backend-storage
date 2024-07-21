@@ -12,13 +12,13 @@ def count_calls(method: Callable) -> Callable:
     """A decorator that takes a single method
     increments the s the count for that key
     and retuns a callable"""
-    method_name = method.__qualname__
+    method_key = method.__qualname__
 
     @wraps(method)
-    def wrapper(*args, **kwargs):
+    def wrapper(self, *args, **kwargs):
         # perform deocrated function here
         self._redis.incr(method_key)
-        return method(*args, **kwargs)
+        return method(self, *args, **kwargs)
     return wrapper
 
 
