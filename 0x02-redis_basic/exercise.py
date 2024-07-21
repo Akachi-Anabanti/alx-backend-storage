@@ -5,6 +5,21 @@ import redis
 import uuid
 import json
 from typing import Union, Optional, Callable
+from functools import wraps
+
+
+def count_calls(method: Callable) -> Callable:
+    """A decorator that takes a single method
+    increments the s the count for that key
+    and retuns a callable"""
+    method_name = method.__qualname__
+
+    @wraps(method)
+    def wrapper(*args, **kwargs):
+        # perform deocrated function here
+        self._redis.incr(method_key)
+        return method(*args, **kwargs)
+    return wrapper
 
 
 class Cache:
@@ -14,6 +29,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
+    @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """Takes data and stores  in redis
         returns : Data ID as str"""
