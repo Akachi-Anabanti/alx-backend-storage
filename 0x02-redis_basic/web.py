@@ -26,8 +26,8 @@ def cache_count(func: Callable) -> Callable:
 
         # set the expiration and the content
         r.setex(f"cached:{url}", 10, content)
-
         return content
+
     return wrapper
 
 
