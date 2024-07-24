@@ -9,7 +9,7 @@ r = redis.Redis()
 
 
 def cache_count(expiration: int = 10):
-    def decorator(method: Callable) -> Callable:
+    def decorator(func: Callable) -> Callable:
         """decorator monitors the call count"""
         @wraps(func)
         def wrapper(url: str):
