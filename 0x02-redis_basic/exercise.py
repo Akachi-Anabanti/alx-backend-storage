@@ -71,7 +71,7 @@ class Cache:
         self._redis.set(id, data)
         return id
 
-    def get(self, key: str, fn: Optional[Callable]=None):
+    def get(self, key: str, fn: Optional[Callable] = None):
         """Retrieves the value of the key from db
             and converts to original format"""
         data = self._redis.get(key)
