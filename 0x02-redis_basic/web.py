@@ -35,9 +35,3 @@ def get_page(url: str) -> str:
     of a url and keeps count of the number of requests made"""
     response = requests.get(url)
     return response.text
-
-
-if __name__ == "__main__":
-    url = "https://google.com/"
-    content = get_page(url)
-    print(f"Access count: {r.get(f'count:{url}').decode('utf-8')}")
