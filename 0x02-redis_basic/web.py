@@ -17,13 +17,13 @@ def cache_count(expiration: int = 10):
             count_key = f"count:{url}"
             r.incr(count_key)  # increment the count key
             # check if the cached content already exists and return it instead
-            cached_content = r.get(count_key)
+            cached_content = r.get(f"cached:{url}")
             if cached_content:
                 return cached_content.decode("utf-8")
             # else call the method with the url
             content = func(url)
             # set the expiration and the content
-            r.setex(count_key, expiration, content)
+            r.setex(f"cached:{url}", expiration, content)
             return content
         return wrapper
     return decorator
