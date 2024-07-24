@@ -13,8 +13,7 @@ def cache_count(func: Callable) -> Callable:
 
     @wraps(func)
     def wrapper(url: str):
-        count_key = f"count:{url}"
-        r.incr(count_key)  # increment the count key
+        r.incr(f"count:{url}")  # increment the count key
 
         # check if the cached content already exists and return it instead
         cached_content = r.get(f"cached:{url}")
@@ -26,7 +25,7 @@ def cache_count(func: Callable) -> Callable:
         content = func(url)
 
         # set the expiration and the content
-        r.setex(f"cached:{url}", expiration, content)
+        r.setex(f"cached:{url}", 10, content)
 
         return content
     return wrapper
