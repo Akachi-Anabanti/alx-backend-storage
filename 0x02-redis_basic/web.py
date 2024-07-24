@@ -9,6 +9,7 @@ r = redis.Redis()
 
 
 def cache_count(expiration: int = 10):
+    """Caches and sets expiration for 10 secs"""
     def decorator(func: Callable) -> Callable:
         """decorator monitors the call count"""
         @wraps(func)
@@ -22,7 +23,7 @@ def cache_count(expiration: int = 10):
             # else call the method with the url
             content = func(url)
             # set the expiration and the content
-            r.setx(count_key, expiration, content)
+            r.setex(count_key, expiration, content)
             return content
         return wrapper
     return decorator
