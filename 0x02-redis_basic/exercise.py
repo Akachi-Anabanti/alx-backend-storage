@@ -8,6 +8,24 @@ from typing import Union, Optional, Callable
 from functools import wraps
 
 
+def call_history(method: Callable) -> Callable:
+    """A decorator that stores the history
+    of inputs and outputs for a particular function
+    """
+    method_name = method.__qualname__
+    input_list_key = f"{method_name}:inputs"
+    output_list_key = f"{method_name}:outputs"
+
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        # performs the list addition
+        self._redis.rpush(input_list_key, str(args))
+        output = method(self, *args, **kwargs)
+        self._redis.rpush(output_list_key, str(output))
+        return output
+    return wrapper
+
+
 def count_calls(method: Callable) -> Callable:
     """A decorator that takes a single method
     increments the s the count for that key
@@ -30,6 +48,7 @@ class Cache:
         self._redis.flushdb()
 
     @count_calls
+    @call_history
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """Takes data and stores  in redis
         returns : Data ID as str"""
